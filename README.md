@@ -40,7 +40,7 @@ simulation/
 `axi4_lite_bidir_system_top` wires two blocks together:
 
 1. **`axi4_lite_bidir_fifo_bridge`** — implements the AXI4-Lite write and read FSMs, latches whichever of AW/W arrives first (or both together), and pushes/pops two independent Gray-code-pointer async FIFOs (`async_fifo.v`) to cross between `s_axi_aclk` and `p_clk`.
-2. **`peripheral`** (`dsp_coprocessor_peripheral.v`) — a simple ready/valid consumer+producer standing in for a real DSP block: it pops a word, applies a trivial transform (`(sample << 1) + const`), and pushes the result back through the second FIFO.
+2. **`peripheral`** (`peripheral.v`) — a simple ready/valid consumer+producer standing in for a real DSP block: it pops a word, applies a trivial transform (`(sample << 1) + const`), and pushes the result back through the second FIFO.
 
 See [`simulation/schematics/`](simulation/schematics) for the traced Verdi schematics of every level of this hierarchy, and [`simulation/waveforms/`](simulation/waveforms) for a full simulation run plus a zoomed-in single-transaction view.
 

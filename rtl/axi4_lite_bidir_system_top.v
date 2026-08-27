@@ -66,7 +66,7 @@ module axi4_lite_bidir_system_top #(
         .p_rd_empty    (p_rd_empty)
     );
     // Downstream Peripheral Instance
-    dsp_coprocessor_peripheral #(
+    peripheral #(
         .DATA_WIDTH(DATA_WIDTH)
     ) u_peripheral (
         .p_clk      (p_clk),

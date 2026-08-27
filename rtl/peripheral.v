@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-module dsp_coprocessor_peripheral #(
+module peripheral #(
     parameter DATA_WIDTH = 32
 )(
     input  wire                  p_clk,
