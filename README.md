@@ -1,6 +1,6 @@
 # AXI4-Lite Bidirectional Async-FIFO Bridge — RTL to Signoff
 
-![Process](https://img.shields.io/badge/Process-gpdk045%2045nm-blue) ![Timing](https://img.shields.io/badge/Timing-Setup%20%2B2.633ns%20%2F%20Hold%20%2B0.049ns-brightgreen) ![DRC](https://img.shields.io/badge/DRC%2FConnectivity-0%20Violations-brightgreen) ![Coverage](https://img.shields.io/badge/Functional%20Coverage-93.82%25-yellow)
+![Process](https://img.shields.io/badge/Process-gpdk045%2045nm-blue) ![Timing](https://img.shields.io/badge/Timing-Setup%20%2B2.633ns%20%2F%20Hold%20%2B0.049ns-brightgreen) ![DRC](https://img.shields.io/badge/DRC%2FConnectivity-0%20Violations-brightgreen) ![Coverage](https://img.shields.io/badge/Code%20Coverage-93.82%25-yellow)
 
 A bidirectional AXI4-Lite ↔ dual-clock FIFO bridge driving a peripheral, carried through **RTL → Genus synthesis (3 strategies) → Innovus place-and-route → Tempus STA signoff → Voltus power signoff**, with every raw report and screenshot checked into this repository rather than just summarized.
 
