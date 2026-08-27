@@ -1,0 +1,30 @@
+i####################################################################
+# report_annotated_parasitics: Tue Aug 25 23:27:43 2026
+#   view: setup_view
+#   -list_not_annotated
+####################################################################
+#floating terms are those which never accounts for parasitcs not relevant to timing paths
+# 0 term floating means metal - x and 1 term float means driver - x
+# list syntax: type: net_name [nrCap Cap nrXCap XCap nrRes Res]
+# unit: pF, Ohm
+
+# Summary of Annotated Parasitics:
++------------------------------------------------------------------------------+
+|    Net Type         |    Count   |   Annotated (%)     | Not Annotated (%)   |
++---------------------+------------+---------------------+---------------------+
+| total               |       3199 |       3194 99.84%   |          5  0.16%   |
++---------------------+------------+---------------------+---------------------+
+| 0-term:floating (*) |          4 |          0  0.00%   |          4 100.00%   |
+| 1-term:no load      |          1 |          0  0.00%   |          1 100.00%   |
+| real net (complete) |       3194 |       3194 100.00%   |          0  0.00%   |
+| real net (broken)   |          0 |          0  0.00%   |          0  0.00%   |
+| zero capacitance net|          0 |          0  0.00%   |          0  0.00%   |
++------------------------------------------------------------------------------+
+Note for Net Types marked "(*)":  Such nets are never timed, but reported here for informational purpose.
+
++-----------------------------------------------------------------+
+| Annotated |    Res (KOhm)   |    Cap (pF)     |    XCap (pF)    |
++-----------+-----------------+-----------------+-----------------+
+| Count     |         58579   |         59477   |          8828   |
+| Value     |      214.4120   |        9.5544   |        0.6587   |
++-----------------------------------------------------------------+
