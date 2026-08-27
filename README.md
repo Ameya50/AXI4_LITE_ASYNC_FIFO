@@ -2,9 +2,9 @@
 
 ![Process](https://img.shields.io/badge/Process-gpdk045%2045nm-blue) ![Timing](https://img.shields.io/badge/Timing-Setup%20%2B2.633ns%20%2F%20Hold%20%2B0.049ns-brightgreen) ![DRC](https://img.shields.io/badge/DRC%2FConnectivity-0%20Violations-brightgreen) ![Coverage](https://img.shields.io/badge/Functional%20Coverage-93.82%25-yellow)
 
-A bidirectional AXI4-Lite ↔ dual-clock FIFO bridge driving a DSP coprocessor peripheral, carried through **RTL → Genus synthesis (3 strategies) → Innovus place-and-route → Tempus STA signoff → Voltus power signoff**, with every raw report and screenshot checked into this repository rather than just summarized.
+A bidirectional AXI4-Lite ↔ dual-clock FIFO bridge driving a peripheral, carried through **RTL → Genus synthesis (3 strategies) → Innovus place-and-route → Tempus STA signoff → Voltus power signoff**, with every raw report and screenshot checked into this repository rather than just summarized.
 
-- **Design:** `axi4_lite_bidir_system_top` — asynchronous AXI4-Lite bridge (Gray-code dual-clock FIFOs) + DSP coprocessor peripheral
+- **Design:** `axi4_lite_bidir_system_top` — asynchronous AXI4-Lite bridge (Gray-code dual-clock FIFOs) + peripheral
 - **Process:** gpdk045 / gsclib045, 45 nm CMOS, VDD 1.08 V
 - **Clocks:** `s_axi_aclk` @ 125 MHz, `p_clk` @ 100 MHz — fully asynchronous, CDC-bridged
 - **Result:** clean timing (Setup WNS +2.633 ns, Hold WNS +0.049 ns), zero DRC/connectivity/antenna violations, independently cross-checked in Tempus (6 ps setup divergence) and Voltus (activity-based power signoff)
@@ -40,7 +40,7 @@ simulation/
 `axi4_lite_bidir_system_top` wires two blocks together:
 
 1. **`axi4_lite_bidir_fifo_bridge`** — implements the AXI4-Lite write and read FSMs, latches whichever of AW/W arrives first (or both together), and pushes/pops two independent Gray-code-pointer async FIFOs (`async_fifo.v`) to cross between `s_axi_aclk` and `p_clk`.
-2. **`dsp_coprocessor_peripheral`** — a simple ready/valid consumer+producer standing in for a real DSP block: it pops a word, applies a trivial transform (`(sample << 1) + const`), and pushes the result back through the second FIFO.
+2. **`peripheral`** (`dsp_coprocessor_peripheral.v`) — a simple ready/valid consumer+producer standing in for a real DSP block: it pops a word, applies a trivial transform (`(sample << 1) + const`), and pushes the result back through the second FIFO.
 
 See [`simulation/schematics/`](simulation/schematics) for the traced Verdi schematics of every level of this hierarchy, and [`simulation/waveforms/`](simulation/waveforms) for a full simulation run plus a zoomed-in single-transaction view.
 

@@ -7,7 +7,7 @@ Every parameter below is pulled directly from the raw tool reports in this repos
 | Parameter | Value | Source |
 |---|---|---|
 | Design (top) | `axi4_lite_bidir_system_top` | all reports |
-| Sub-blocks | `axi4_lite_bidir_fifo_bridge`, `async_fifo` ×2, `dsp_coprocessor_peripheral` | [`rtl/`](rtl) |
+| Sub-blocks | `axi4_lite_bidir_fifo_bridge`, `async_fifo` ×2, `peripheral` | [`rtl/`](rtl) |
 | Process / Library | gpdk045bc (timing), gsclib045 (physical), 45 nm CMOS | [`synthesis/normal/area.rpt`](synthesis/normal/area.rpt) |
 | VDD | **1.08 V** | [`physical_design/reports/power.rpt`](physical_design/reports/power.rpt), [`signoff/voltus/power.rpt`](signoff/voltus/power.rpt) |
 | Clock domains | 2, fully asynchronous, bridged by Gray-code dual-clock FIFOs | RTL |
