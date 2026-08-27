@@ -84,7 +84,7 @@ Full discussion: [§9](#9-comparison-3-voltus-signoff-power-vs-innovus-implement
 | `verify_antenna` | Innovus | 0 violations |
 | Routing overflow | Innovus | 0.00% H / 0.00% V |
 
-## 7. Functional Verification (Simulation)
+## 7. Code Coverage
 
 | Metric | Score |
 |---|---|

@@ -44,7 +44,7 @@ simulation/
 
 See [`simulation/schematics/`](simulation/schematics) for the traced Verdi schematics of every level of this hierarchy, and [`simulation/waveforms/`](simulation/waveforms) for a full simulation run plus a zoomed-in single-transaction view.
 
-Verification is a coverage-driven testbench (`tb_axi4_lite_coverage_verilog.v`) exercising address-decode DECERR paths, empty-read SLVERR, write-FSM skew orderings, FIFO full/empty boundaries, an async-reset-mid-FSM corner case, and a pointer-wraparound sweep. Final scores: **93.82% overall**, 100% FSM, 99.53% toggle — see [`simulation/coverage/`](simulation/coverage) and [§7 of SPECIFICATIONS.md](SPECIFICATIONS.md#7-functional-verification-simulation).
+Verification is a coverage-driven testbench (`tb_axi4_lite_coverage_verilog.v`) exercising address-decode DECERR paths, empty-read SLVERR, write-FSM skew orderings, FIFO full/empty boundaries, an async-reset-mid-FSM corner case, and a pointer-wraparound sweep. Final scores: **93.82% overall**, 100% FSM, 99.53% toggle — see [`simulation/coverage/`](simulation/coverage) and [§7 of SPECIFICATIONS.md](SPECIFICATIONS.md#7-code-coverage).
 
 ## 2. Comparison 1 — Synthesis Strategies vs. Post-Route (Innovus) Reality
 
