@@ -17,10 +17,9 @@ Each stage of the flow lives in its own tree — nothing is mixed together:
 
 ```
 rtl/                    5 Verilog source + testbench files
-synthesis/              Genus — 3 independent strategies, each with its own area/power/timing reports
+synthesis/              Genus — 2 independent strategies, each with its own area/power/timing reports
   gate_level_views/     generic -> tech-mapped -> optimized gate count screenshots
   normal/               default synthesis (the netlist actually taken to P&R — see Finding below)
-  area_optimized/       area-effort synthesis experiment
   power_optimized/      power-effort synthesis experiment (clock-gated)
 physical_design/        Innovus place-and-route
   layout_views/         floorplan -> pins -> PDN -> placement -> CTS -> routing -> final, in flow order
@@ -48,23 +47,22 @@ Verification is a coverage-driven testbench (`tb_axi4_lite_coverage_verilog.v`) 
 
 ## 2. Comparison 1 — Synthesis Strategies vs. Post-Route (Innovus) Reality
 
-Three independent Genus synthesis runs were generated ([`synthesis/`](synthesis)):
+Two independent Genus synthesis runs were generated ([`synthesis/`](synthesis)):
 
-| Metric | Normal | Area-optimized | Power-optimized | Post-Route (Innovus) |
-|---|---:|---:|---:|---:|
-| Cell count | 2,240 | 2,281 | 2,241 | 3,085 (incl. CTS/hold-fix cells) |
-| Total area (µm²) | 15,164.5 | 15,368.3 (**+1.3%**) | **12,237.4 (−19.3%)** | 17,406.8 (core, includes routing margin) |
-| Total power (mW) | 1.800 | 1.889 (**+4.9%**) | **0.370 (−79.5%)** | 1.871 (vectorless) |
-| Setup slack (best group shown) | +2.418 ns | +2.513 ns | +3.283 ns | **+2.633 ns** |
+| Metric | Normal | Power-optimized | Post-Route (Innovus) |
+|---|---:|---:|---:|
+| Cell count | 2,240 | 2,241 | 3,085 (incl. CTS/hold-fix cells) |
+| Total area (µm²) | 15,164.5 | **12,237.4 (−19.3%)** | 17,406.8 (core, includes routing margin) |
+| Total power (mW) | 1.800 | **0.370 (−79.5%)** | 1.871 (vectorless) |
+| Setup slack (best group shown) | +2.418 ns | +3.283 ns | **+2.633 ns** |
 
 **Reading this table:**
 - The **power-optimized** run is dramatically cheaper on both area (−19.3%) and power (−79.5%) than the normal run. Its timing report shows `cg_enable_group_*` path groups, confirming Genus inserted **clock gating** — that single structural change accounts for most of the power win (clock-network + sequential switching power collapses when idle registers aren't toggling their clock pin every cycle).
-- The **area-optimized** run is, counterintuitively, *larger and higher-power* than the plain "normal" run (+1.3% area, +4.9% power). Area-effort in Genus optimizes cell/net area under the existing timing constraint — it does not automatically reduce power, and here it selected slightly different (larger-drive) cells to hit timing margin, which cost both area and power.
-- **Setup slack looks like it improves through the list (2.42 → 2.51 → 3.28 ns)** — but these numbers are **not from the same path group** (`in2reg` vs `s_axi_aclk` view) and use Genus's pre-route wireload-based timing model, not real extracted parasitics. They are directional synthesis-stage estimates, not signoff numbers.
+- **Setup slack differs between the two runs (2.42 ns vs. 3.28 ns)** — but these numbers are **not from the same path group** (`in2reg` vs `s_axi_aclk` view) and use Genus's pre-route wireload-based timing model, not real extracted parasitics. They are directional synthesis-stage estimates, not signoff numbers.
 
 ### Finding: which synthesis run was actually taken to P&R?
 
-The area/power numbers make this identifiable without needing a build log. Post-route Innovus power (**1.871 mW**) sits close to the **normal** run's synthesis-stage power (1.800 mW) — a plausible ~4% increase from real parasitics and clock-tree buffering. It is nowhere near the power-optimized run's 0.370 mW (which would imply a >5× jump from clock-gating being physically undone, which didn't happen — the post-route netlist shows no `cg_enable` structures). **The "normal" Genus netlist is the one that was carried into `physical_design/`**; area-optimized and power-optimized are exploratory synthesis experiments captured here for comparison, not alternate P&R flows.
+The area/power numbers make this identifiable without needing a build log. Post-route Innovus power (**1.871 mW**) sits close to the **normal** run's synthesis-stage power (1.800 mW) — a plausible ~4% increase from real parasitics and clock-tree buffering. It is nowhere near the power-optimized run's 0.370 mW (which would imply a >5× jump from clock-gating being physically undone, which didn't happen — the post-route netlist shows no `cg_enable` structures). **The "normal" Genus netlist is the one that was carried into `physical_design/`**; power-optimized is an exploratory synthesis experiment captured here for comparison, not an alternate P&R flow.
 
 ## 3. Comparison 2 — Tempus Signoff Timing vs. Innovus Implementation Timing
 
